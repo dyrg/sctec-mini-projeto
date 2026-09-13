@@ -6,8 +6,10 @@ import cv2
 import numpy as np
 
 KERNEL_BLUR = 5
+KERNEL_MORFOLOGIA = 3
 LIMIAR_CANNY_BAIXO = 50
 LIMIAR_CANNY_ALTO = 150
+TAMANHO_PADRAO = (256, 256)
 
 
 def converter_para_cinza(imagem: np.ndarray) -> np.ndarray:
@@ -31,9 +33,22 @@ def detectar_bordas(imagem: np.ndarray) -> np.ndarray:
     return cv2.Canny(imagem, LIMIAR_CANNY_BAIXO, LIMIAR_CANNY_ALTO)
 
 
+def refinar_mascara(imagem: np.ndarray, kernel: int = KERNEL_MORFOLOGIA) -> np.ndarray:
+    """Remove pequenos ruídos com abertura morfológica."""
+    elemento = np.ones((kernel, kernel), np.uint8)
+    return cv2.morphologyEx(imagem, cv2.MORPH_OPEN, elemento)
+
+
+def redimensionar(imagem: np.ndarray, tamanho: tuple[int, int] = TAMANHO_PADRAO) -> np.ndarray:
+    """Redimensiona a imagem para o tamanho padrão."""
+    return cv2.resize(imagem, tamanho)
+
+
 def preprocessar(imagem: np.ndarray) -> np.ndarray:
-    """Aplica as etapas básicas de pré-processamento."""
+    """Aplica o pipeline completo de pré-processamento."""
     cinza = converter_para_cinza(imagem)
     suave = suavizar(cinza)
     mascara = limiarizar(suave)
-    return detectar_bordas(mascara)
+    refinada = refinar_mascara(mascara)
+    bordas = detectar_bordas(refinada)
+    return redimensionar(bordas)
