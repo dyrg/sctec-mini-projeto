@@ -1,4 +1,4 @@
-"""Ponto de entrada da sprint 2: leitura em lote das imagens."""
+"""Ponto de entrada do pipeline de pré-processamento."""
 
 from __future__ import annotations
 
@@ -6,9 +6,11 @@ import os
 import sys
 from collections import Counter
 
-from src.loader import carregar_imagens, listar_imagens
+from src.loader import carregar_imagens, listar_imagens, salvar_imagem
+from src.preprocess import preprocessar
 
 DIRETORIO_ENTRADA = "raw_images"
+DIRETORIO_SAIDA = "processed_images"
 
 
 def main() -> int:
@@ -24,17 +26,21 @@ def main() -> int:
         return 1
 
     por_classe: Counter[str] = Counter()
-    carregadas = 0
+    processadas = 0
 
-    for caminho_relativo, _imagem in carregar_imagens(DIRETORIO_ENTRADA):
+    for caminho_relativo, imagem in carregar_imagens(DIRETORIO_ENTRADA):
+        resultado = preprocessar(imagem)
+        salvar_imagem(resultado, DIRETORIO_SAIDA, caminho_relativo)
+
         classe = os.path.dirname(caminho_relativo) or "(raiz)"
         por_classe[classe] += 1
-        carregadas += 1
+        processadas += 1
 
     print(f"Diretório de entrada: {DIRETORIO_ENTRADA}/")
+    print(f"Diretório de saída: {DIRETORIO_SAIDA}/")
     print(f"Arquivos de imagem encontrados: {len(arquivos)}")
-    print(f"Imagens carregadas: {carregadas}")
-    print(f"Arquivos ignorados: {len(arquivos) - carregadas}")
+    print(f"Imagens processadas: {processadas}")
+    print(f"Arquivos ignorados: {len(arquivos) - processadas}")
     print("Distribuição por classe:")
 
     for classe, total in sorted(por_classe.items()):
