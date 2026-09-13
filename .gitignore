@@ -1,6 +1,11 @@
-# Dataset e saídas do pipeline
-raw_images/
-processed_images/
+# Dataset e saídas do pipeline (mantém a estrutura de pastas, ignora as imagens)
+raw_images/*
+!raw_images/.gitkeep
+processed_images/*
+!processed_images/.gitkeep
+
+# Dataset compactado e enunciado (local apenas)
+zip/*
 
 # Python
 __pycache__/
