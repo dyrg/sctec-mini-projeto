@@ -1,0 +1,17 @@
+# Dataset e saídas do pipeline
+raw_images/
+processed_images/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+*.egg-info/
+
+# Ambiente / editores
+.env
+.vscode/
+.idea/
+.DS_Store
