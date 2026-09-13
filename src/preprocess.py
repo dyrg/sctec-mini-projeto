@@ -6,6 +6,8 @@ import cv2
 import numpy as np
 
 KERNEL_BLUR = 5
+LIMIAR_CANNY_BAIXO = 50
+LIMIAR_CANNY_ALTO = 150
 
 
 def converter_para_cinza(imagem: np.ndarray) -> np.ndarray:
@@ -18,7 +20,20 @@ def suavizar(imagem: np.ndarray, kernel: int = KERNEL_BLUR) -> np.ndarray:
     return cv2.GaussianBlur(imagem, (kernel, kernel), 0)
 
 
+def limiarizar(imagem: np.ndarray) -> np.ndarray:
+    """Aplica limiarização com Otsu."""
+    _, resultado = cv2.threshold(imagem, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+    return resultado
+
+
+def detectar_bordas(imagem: np.ndarray) -> np.ndarray:
+    """Detecta bordas com Canny."""
+    return cv2.Canny(imagem, LIMIAR_CANNY_BAIXO, LIMIAR_CANNY_ALTO)
+
+
 def preprocessar(imagem: np.ndarray) -> np.ndarray:
     """Aplica as etapas básicas de pré-processamento."""
     cinza = converter_para_cinza(imagem)
-    return suavizar(cinza)
+    suave = suavizar(cinza)
+    mascara = limiarizar(suave)
+    return detectar_bordas(mascara)
