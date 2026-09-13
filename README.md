@@ -20,6 +20,24 @@ Baixar em: https://drive.google.com/file/d/1K5gNxQ7RXA-nb4boNzPYQTJlRvJyYBD1/vie
 
 Copiar as imagens de `ok_front` e `def_front` para `raw_images/`.
 
+## Como executar
+
+Criar o ambiente virtual e instalar as dependências:
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+```
+
+Executar o pipeline:
+
+```bash
+python main.py
+```
+
+O script lê as imagens de `raw_images/` em lote e grava o resultado em `processed_images/`.
+
 ## Licença
 
 MIT
