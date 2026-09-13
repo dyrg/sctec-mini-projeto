@@ -40,3 +40,12 @@ def carregar_imagens(
             continue
 
         yield os.path.relpath(caminho, diretorio), imagem
+
+
+def salvar_imagem(imagem: np.ndarray, diretorio: str, caminho_relativo: str) -> str:
+    """Grava a imagem no diretório de saída mantendo a pasta da classe."""
+    destino = os.path.join(diretorio, caminho_relativo)
+    os.makedirs(os.path.dirname(destino) or diretorio, exist_ok=True)
+    if not cv2.imwrite(destino, imagem):
+        raise OSError(f"não foi possível salvar a imagem: {destino}")
+    return destino
