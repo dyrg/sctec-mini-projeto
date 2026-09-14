@@ -41,6 +41,7 @@ def main() -> int:
     print(f"Arquivos de imagem encontrados: {len(arquivos)}")
     print(f"Imagens processadas: {processadas}")
     print(f"Arquivos ignorados: {len(arquivos) - processadas}")
+    print("Etapas aplicadas: grayscale, blur, Otsu, morfologia, Canny e resize")
     print("Distribuição por classe:")
 
     for classe, total in sorted(por_classe.items()):
