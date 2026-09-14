@@ -4,9 +4,6 @@ raw_images/*
 processed_images/*
 !processed_images/.gitkeep
 
-# Dataset compactado e enunciado (local apenas)
-zip/*
-
 # Python
 __pycache__/
 *.py[cod]
